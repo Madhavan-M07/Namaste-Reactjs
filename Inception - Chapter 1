@@ -1,0 +1,7 @@
+Async and Defer : Are Boolean Attribute which are used along with Script Tag to load the External scripts efficiently in Web Pages .
+1. normal script tag
+2. Async
+3. Defer
+
+<script src=" " />                // HTML PARSING SCRIPT
+ 
