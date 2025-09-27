@@ -1,0 +1,97 @@
+Async and Defer : Are Boolean Attribute which are used along with Script Tag to load the External scripts efficiently in Web Pages .
+1. normal script tag
+2. Async
+3. Defer
+
+<script src=" " />                // HTML PARSING SCRIPT
+Normal : Browser parsing Html line by line . now when it see the script tag .. it will stop the parsing at the point of time . And fetches the script and give .
+
+broswer -----> parsing html ---> script tag ---> stops -> fetchs the script from network -> and executes then and there ->After script fully executed HTML Will parse .
+
+
+2. Async :  html parsing is going on ...any of the async tag fetches the script from the network asynchronsouly in parllel (Html parses stops )-> scripts are executed . and then html parses continues .
+
+3. defer => html parsing going on -> scripts are fetching parllely---> when html parsing fully completed .. then only scripts are Executed.
+ 
+
+Arrow Function :
+1. What is an Arrow Function?
+An arrow function (=>) in JavaScript is a shorter syntax for writing functions, introduced in ES6 (2015).
+It is mainly used for:
+Concise function expressions
+Lexical this binding (solves many this-related issues)
+
+2. Syntax : 
+
+Before ES6 (using function keyword) :
+
+// Regular function expression
+const add = function(a, b) {
+  return a + b;
+};
+console.log(add(2, 3)); // 5
+
+After ES6 (arrow function) :
+
+// Arrow function
+const add = (a, b) => a + b;
+console.log(add(2, 3)); // 5
+
+3. Why Arrow Functions Were Introduced?
+
+Shorter & cleaner syntax (fewer lines, no function keyword).
+
+this binding problem solved
+
+Normal functions have their own this.
+
+Arrow functions do not bind this; instead, they use the this value from the surrounding scope (lexical this).
+
+🔹 4. Example – this Difference
+
+❌ Before (function keyword issue) :
+function Person() {
+  this.age = 0;
+
+  setInterval(function() {
+    this.age++;  // ❌ here 'this' refers to setInterval, not Person
+    console.log(this.age);
+  }, 1000);
+}
+
+new Person();
+Output: NaN (because this is not the Person object).
+
+✅ After (arrow function fix) :
+
+function Person() {
+  this.age = 0;
+
+  setInterval(() => {
+    this.age++;  // ✅ arrow uses 'this' from Person
+    console.log(this.age);
+  }, 1000);
+}
+
+new Person();
+
+1
+2
+3
+...
+5. Where to Use?
+Callbacks (map, filter, reduce)
+
+Event listeners (when you don’t need dynamic this)
+
+Short inline functions
+
+const numbers = [1, 2, 3, 4];
+const squares = numbers.map(n => n * n);
+console.log(squares); // [1, 4, 9, 16]
+
+✅ Summary:
+
+Before ES6 → used function keyword for everything.
+
+After ES6 → can use arrow functions for concise syntax & lexical this.
