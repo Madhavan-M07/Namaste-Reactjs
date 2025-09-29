@@ -1,0 +1,74 @@
+npm - not stands for node package manager ..its just a package manager ..where all the package need to include .. we can use there .
+1.Libraries
+2.Utilites.
+
+So we need to create a npm and install certain ulities for our App :
+1.npm init and set all the process and at last it will install package.json file .
+Package.json : is a configuration for Npm :
+why do we need : 
+
+Npm : package manager ... it will automatically manages all the packages in an System.
+Sometimes it is called depedencies . npm take care of all the version of the packages .
+packages.json it will take care of : is a configuration of npm .
+
+
+Bundler : webpack , vite , parser these are called bundels and package it all the app .. and make a production ready code .
+create -react-app : behind the scene it creates webpack bundler to it .
+
+Parcel - is Bundler which will ignite your App . chunking , minificattion . is used getting install from npm from the remote .
+Two types : dependecies
+1. dev dependencies :  in a development phase  npm install -D parcel : want as a dev dependencies .
+2.Normal dependencies : used in production .
+
+package.json : it will take care of all the dependencies and keep track of it .
+
+{
+  "name": "namaste-react",
+  "version": "1.0.0",
+  "description": "This is namaste react by Madhavan M",
+  "main": "App.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Madhavan-M07"
+  },
+  "keywords": [],
+  "author": "Madhavan M",
+  "license": "ISC",
+  "dependencies": {
+    "parcel": "^2.16.0"   // ^ denotes carot automatically update tmrw .. minor update    
+  }
+}
+
+Tilde (~): More restrictive, primarily for patch updates (bug fixes).
+Caret (^): More flexible, allowing minor and patch updates within the same major version (new features and bug fixes).
+
+
+what is package-lock.json : 
+1.working on local and breakout in production :  basically to avoid the keep the hash to verify in the dev machine ..which is the same machine deployed on production .
+keep a track of exact version of the package . it will lock an exact version .. but package.json : keep the carot ...version of package . 
+
+
+3. Node modules is also installed  : which contains ..all the code ...of parcel ...and put into node modules . node modules : is like database ..containes all the data in parcel ..
+
+Transitive dependicies : parcel can be dependent on some ...dependecies or package for pacel there is dependencies ..where it will be in node modules .
+For our project we dependent on parcel dependencies which will be in the package.json file ..
+
+I dont want to put it on production or github in node modules :
+so put in to .gitignore .
+
+if you package.json and package-lock.json ..you can recreate .. the nodule modules again .
+by use npm install .. it will create a node-modules .
+
+Now we can ignite the app :
+npx parcel index.html  : it will iginite your app . : 
+npm : calling the command or installing the package .
+npx : executing the package .
+
+
+
+
+
+
