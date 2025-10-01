@@ -3,3 +3,645 @@ https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0134236&lng=77.6555729&co
 Real-time-data : How swiggy gets the data from the backend .
 
 Its uses config driven UI
+1. OFFER IN BANGALORE , KOLKATA , MUMBAI EACH OFFER CAROSOAL IS DIFFERENT IN MUMBAI , CHHENAI . the ui behaves depend on Data . UI driven by config =>
+latest practice all the company follows .
+
+Config driven UI : Our websites uses config : controlling the UI through the data 
+
+Config-driven UI (CDUI) is a design pattern where the structure, layout, and behavior of a user interface are defined by external configuration files or data, rather than being hard-coded within the application's source code. This approach separates the UI's presentation logic from its underlying implementation, offering significant advantages in terms of flexibility, maintainability, and scalability. 
+Key Principles of Config-Driven UI:
+Separation of Concerns: The UI's definition (what it looks like and how it behaves) is distinct from the code that renders it.
+External Configuration: UI elements, their properties, and interactions are described in external formats like JSON, YAML, or XML.
+Dynamic Generation: A core UI engine or renderer interprets the configuration and dynamically constructs the user interface at runtime.
+Benefits of Config-Driven UI:
+Flexibility and Adaptability: UI changes can be implemented by modifying configuration files without requiring code changes or redeployments. This allows for rapid iteration and customization for different user groups, locales, or business requirements.
+Faster Development: Reusable UI components and configurations can accelerate the development of new features and interfaces.
+Improved Maintainability: Centralized configuration makes it easier to manage and update UI elements across an application or suite of applications.
+Reduced Development Costs: Less code to write and maintain can translate to lower development and maintenance expenses.
+Enhanced Scalability: CDUI facilitates the creation of complex, data-driven interfaces and dashboards that can adapt to varying data structures and user needs.
+Examples of Config-Driven UI Applications:
+Dynamic Forms: Building forms where fields, validations, and layout are defined in a configuration.
+Content Management Systems (CMS): Defining page layouts, component arrangements, and content types through configurations.
+Dashboards and Reporting Tools: Creating customizable dashboards where widgets and data visualizations are configured.
+A/B Testing: Easily switching between different UI variations for testing purposes by modifying configurations.
+Implementation Considerations:
+Configuration Format: Choosing an appropriate format (JSON, YAML, etc.) for defining UI elements and their properties.
+UI Engine/Renderer: Developing or utilizing a framework that can interpret the configuration and render the corresponding UI components.
+Component Library: Creating a library of reusable UI components that can be referenced and configured.
+Validation and Error Handling: Implementing mechanisms to validate configurations and handle errors during UI generation.
+
+
+This JSON you shared is a Swiggy API response (from their internal dapi endpoints).
+Let me break it down for you step by step 👇
+
+📌 Structure
+
+The outer object:
+
+{
+  statusCode: 0,
+  data: { ... },
+  tid: "...",
+  sid: "...",
+  deviceId: "...",
+  csrfToken: "..."
+}
+
+
+statusCode: 0 → means the request was successful.
+
+data → contains the actual content (filters, restaurant list, etc.).
+
+tid, sid, deviceId, csrfToken → Swiggy tracking/session info.
+
+📌 Inside data
+
+The data object holds Swiggy’s restaurant listing for a given location or search.
+
+statusMessage: "done successfully"
+Confirms the request worked.
+
+cards → This is the main array where Swiggy packs UI widgets (filters, sorting, restaurants, etc.).
+
+📌 Example of Cards
+🔹 Filters (InlineViewFilterSortWidget)
+{
+  "@type": "swiggy.gandalf.widgets.v2.InlineViewFilterSortWidget",
+  "restaurantCount": 214,
+  "facetList": [
+    {
+      "label": "Veg/Non-Veg",
+      "facetInfo": [
+        { "label": "Non Veg" },
+        { "label": "Pure Veg" }
+      ]
+    },
+    {
+      "label": "Ratings",
+      "facetInfo": [
+        { "label": "Ratings 4.0+" },
+        { "label": "Ratings 4.5+" }
+      ]
+    }
+  ]
+}
+
+
+👉 This tells the app which filters to show (Veg, Non-Veg, Ratings, Cost, Delivery Time, etc.).
+
+🔹 Restaurant Count Widget
+{
+  "@type": "swiggy.gandalf.widgets.v2.GridWidget",
+  "id": "restaurantCountWidget",
+  "gridElements": {
+    "infoWithStyle": {
+      "text": "214 Restaurants to explore"
+    }
+  }
+}
+
+
+👉 Just displays "214 Restaurants to explore" in the UI.
+
+🔹 Restaurant Info (Restaurant)
+{
+  "@type": "swiggy.presentation.food.v2.Restaurant",
+  "info": {
+    "id": "787489",
+    "name": "FreshMenu",
+    "locality": "BANASWADI",
+    "areaName": "OMBR LAYOUT",
+    "costForTwo": "₹250 for two",
+    "cuisines": [
+      "Continental", "Chinese", "Oriental"
+    ],
+    "avgRating": 3.8,
+    "sla": { "deliveryTime": 33, "slaString": "30-35 mins" },
+    "availability": { "opened": true },
+    "aggregatedDiscountInfoV3": {
+      "header": "ITEMS",
+      "subHeader": "AT ₹39"
+    }
+  },
+  "cta": {
+    "link": "swiggy://menu?restaurant_id=787489&query=Chinese",
+    "text": "RESTAURANT_MENU"
+  }
+}
+
+
+👉 This is one restaurant card:
+
+id: unique restaurant ID.
+
+name: "FreshMenu".
+
+location: "BANASWADI".
+
+costForTwo: "₹250 for two".
+
+rating: 3.8.
+
+sla: delivery time details.
+
+discounts: "ITEMS AT ₹39".
+
+cta: deep link to open restaurant menu.
+
+📌 Other Important Fields
+
+promoted / adTrackingId → for paid promotions.
+
+badges → extra tags like “Pure Veg”, “Top Rated”.
+
+sla → delivery SLA (time, distance).
+
+aggregatedDiscountInfoV3 → offers like 20% OFF, ITEMS AT ₹99.
+
+✅ So, this JSON is the payload Swiggy’s mobile/web app uses to build the "restaurants list" page.
+
+If you parse this, you can build your own restaurant listing UI — filters at the top, then the restaurant cards (name, cuisines, ratings, price, delivery time, offers).
+
+
+{
+statusCode: 0,
+data: {
+statusMessage: "done successfully",
+pageOffset: {},
+cards: [
+{
+card: {
+card: {}
+}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.gandalf.widgets.v2.InlineViewFilterSortWidget",
+sortConfigs: [],
+restaurantCount: 214,
+facetList: [
+{
+label: "Veg/Non-Veg",
+id: "isVeg",
+selection: "SELECT_TYPE_MULTISELECT",
+facetInfo: [
+{
+label: "Non Veg",
+id: "isVegfacetquery0",
+analytics: { },
+openFilter: true
+},
+{
+label: "Pure Veg",
+id: "isVegfacetquery1",
+analytics: { },
+openFilter: true
+}
+],
+viewType: "VIEW_TYPE_HALF_CARD",
+subLabel: "Filterby",
+openFilter: true
+},
+{
+label: "Ratings",
+id: "rating",
+selection: "SELECT_TYPE_MULTISELECT",
+facetInfo: [
+{
+label: "Ratings",
+id: "ratingfacetquery0",
+analytics: { },
+openFilter: true
+},
+{
+label: "Ratings 4.0+",
+id: "ratingfacetquery1",
+analytics: { },
+openFilter: true
+},
+{
+label: "Ratings 4.5+",
+id: "ratingfacetquery2",
+analytics: { },
+openFilter: true
+}
+],
+viewType: "VIEW_TYPE_HALF_CARD",
+subLabel: "Filterby",
+openFilter: true
+},
+{
+label: "Delivery Time",
+id: "deliveryTime",
+selection: "SELECT_TYPE_MULTISELECT",
+facetInfo: [
+{},
+{
+label: "Less than 45 mins",
+id: "deliveryTimefacetquery1",
+analytics: { },
+openFilter: true
+}
+],
+viewType: "VIEW_TYPE_HALF_CARD",
+subLabel: "Filterby",
+openFilter: true
+},
+{
+label: "Cost For Two",
+id: "costForTwo",
+selection: "SELECT_TYPE_MULTISELECT",
+facetInfo: [
+{
+label: "Less than Rs. 300",
+id: "costForTwofacetquery0",
+analytics: { },
+openFilter: true
+},
+{
+label: "Rs.300 - Rs.600",
+id: "costForTwofacetquery1",
+analytics: { },
+openFilter: true
+},
+{
+label: "Greater than Rs. 600",
+id: "costForTwofacetquery2",
+analytics: { },
+openFilter: true
+}
+],
+viewType: "VIEW_TYPE_HALF_CARD",
+subLabel: "Filterby",
+openFilter: true
+}
+],
+widgetId: "inlineFacetFilter"
+}
+}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.gandalf.widgets.v2.GridWidget",
+layout: {
+rows: 1,
+widgetPadding: {},
+widgetTheme: {
+defaultMode: {},
+darkMode: {
+backgroundColour: "#1B3028",
+theme: "THEME_TYPE_DARK"
+}
+}
+},
+id: "restaurantCountWidget",
+gridElements: {
+infoWithStyle: {
+@type: "type.googleapis.com/swiggy.gandalf.widgets.v2.TextBoxV2",
+text: "214 Restaurants to explore",
+headerStyling: {
+textSize: 15,
+textColor: "text_color_highest_emphasis",
+textFontName: "FONT_NAME_HEADER_H5",
+maxLines: 1
+}
+}
+}
+}
+}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.presentation.food.v2.Restaurant",
+info: {
+id: "787489",
+name: "FreshMenu",
+cloudinaryImageId: "FOOD_CATALOG/IMAGES/CMS/2024/12/18/beaf45f6-318e-465c-a948-01d2eb86714c_c7843cdb-8c23-4734-a8ad-214ae4452d99.jpg",
+locality: "BANASWADI",
+areaName: "OMBR LAYOUT",
+costForTwo: "₹250 for two",
+cuisines: [
+"Continental",
+"Chinese",
+"Oriental",
+"Asian",
+"Healthy Food",
+"Fast Food",
+"Indian",
+"Desserts"
+],
+avgRating: 3.8,
+parentId: "398",
+avgRatingString: "3.8",
+totalRatingsString: "4.9K+",
+promoted: true,
+adTrackingId: "cid=33409065~p=0~adgrpid=33409065#ag1~mp=SWIGGY_IN~bl=FOOD~aet=RESTAURANT~aeid=787489~plpr=COLLECTION~eid=65500408-43e0-4a12-b03c-5ba17453e578~srvts=1759330352160~collid=83636",
+sla: {
+deliveryTime: 33,
+lastMileTravel: 1,
+serviceability: "SERVICEABLE",
+slaString: "30-35 mins",
+lastMileTravelString: "1.0 km",
+iconType: "ICON_TYPE_EMPTY"
+},
+availability: {
+nextCloseTime: "2025-10-02 00:00:00",
+opened: true
+},
+badges: { },
+isOpen: true,
+type: "F",
+badgesV2: {
+entityBadges: {
+textBased: { },
+imageBased: { },
+textExtendedBadges: { }
+}
+},
+aggregatedDiscountInfoV3: {
+header: "ITEMS",
+subHeader: "AT ₹39"
+},
+orderabilityCommunication: {
+title: { },
+subTitle: { },
+message: { },
+customIcon: { },
+commsStyling: { }
+},
+differentiatedUi: {
+displayType: "ADS_UI_DISPLAY_TYPE_ENUM_DEFAULT",
+differentiatedUiMediaDetails: {
+mediaType: "ADS_MEDIA_ENUM_IMAGE",
+lottie: { },
+video: { }
+}
+},
+reviewsSummary: { },
+displayType: "RESTAURANT_DISPLAY_TYPE_DEFAULT",
+restaurantOfferPresentationInfo: { },
+externalRatings: {
+aggregatedRating: {
+rating: "--"
+}
+},
+ratingsDisplayPreference: "RATINGS_DISPLAY_PREFERENCE_SHOW_SWIGGY",
+campaignId: "33409065"
+},
+analytics: { },
+cta: {
+link: "swiggy://menu?restaurant_id=787489&source=collection&query=Chinese",
+text: "RESTAURANT_MENU",
+type: "DEEPLINK"
+},
+widgetId: "collectionV5RestaurantListWidget_SimRestoRelevance_food"
+},
+relevance: {}
+}
+},
+{
+card: {}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.presentation.food.v2.Restaurant",
+info: {
+id: "665197",
+name: "Wow! Momo",
+cloudinaryImageId: "RX_THUMBNAIL/IMAGES/VENDOR/2025/6/30/6beea595-0c61-4003-b560-9c91c36b6c54_665197.jpg",
+locality: "Horamava Main Road",
+areaName: "Horamavu Main Road",
+costForTwo: "₹300 for two",
+cuisines: [
+"Momos",
+"Chinese",
+"fastfood",
+"Asian",
+"Beverages"
+],
+avgRating: 3.9,
+parentId: "1776",
+avgRatingString: "3.9",
+totalRatingsString: "1.9K+",
+promoted: true,
+adTrackingId: "cid=33443739~p=3~adgrpid=33443739#ag1~mp=SWIGGY_IN~bl=FOOD~aet=RESTAURANT~aeid=665197~plpr=COLLECTION~eid=070ad3dd-4e84-4f01-b7a8-eca7c7431fa7~srvts=1759330352160~collid=83636",
+sla: {
+deliveryTime: 38,
+lastMileTravel: 1.8,
+serviceability: "SERVICEABLE",
+slaString: "35-40 mins",
+lastMileTravelString: "1.8 km",
+iconType: "ICON_TYPE_EMPTY"
+},
+availability: {
+nextCloseTime: "2025-10-01 23:00:00",
+opened: true
+},
+badges: { },
+isOpen: true,
+type: "F",
+badgesV2: {
+entityBadges: {
+textBased: { },
+imageBased: { },
+textExtendedBadges: { }
+}
+},
+aggregatedDiscountInfoV3: {
+header: "ITEMS",
+subHeader: "AT ₹99",
+logoCtx: {
+text: "BENEFITS"
+}
+},
+orderabilityCommunication: {
+title: { },
+subTitle: { },
+message: { },
+customIcon: { },
+commsStyling: { }
+},
+differentiatedUi: {
+displayType: "ADS_UI_DISPLAY_TYPE_ENUM_DEFAULT",
+differentiatedUiMediaDetails: {
+mediaType: "ADS_MEDIA_ENUM_IMAGE",
+lottie: { },
+video: { }
+}
+},
+reviewsSummary: { },
+displayType: "RESTAURANT_DISPLAY_TYPE_DEFAULT",
+restaurantOfferPresentationInfo: { },
+externalRatings: {
+aggregatedRating: {
+rating: "--"
+}
+},
+ratingsDisplayPreference: "RATINGS_DISPLAY_PREFERENCE_SHOW_SWIGGY",
+campaignId: "33443739"
+},
+analytics: { },
+cta: {
+link: "swiggy://menu?restaurant_id=665197&source=collection&query=Chinese",
+text: "RESTAURANT_MENU",
+type: "DEEPLINK"
+},
+widgetId: "collectionV5RestaurantListWidget_SimRestoRelevance_food"
+},
+relevance: {
+type: "RELEVANCE_TYPE_ON_MENU_RETURN",
+sectionId: "MENU_RETURN_FOOD"
+}
+}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.presentation.food.v2.Restaurant",
+info: {
+id: "29786",
+name: "Chung Wah",
+cloudinaryImageId: "ec646679a253040a6663e146328c9b84",
+locality: "Banaswadi",
+areaName: "Banaswadi",
+costForTwo: "₹350 for two",
+cuisines: [
+"Chinese"
+],
+avgRating: 4.3,
+parentId: "271",
+avgRatingString: "4.3",
+totalRatingsString: "16K+",
+sla: {
+deliveryTime: 36,
+lastMileTravel: 1.3,
+serviceability: "SERVICEABLE",
+slaString: "35-40 mins",
+lastMileTravelString: "1.3 km",
+iconType: "ICON_TYPE_EMPTY"
+},
+availability: {
+nextCloseTime: "2025-10-01 23:59:00",
+opened: true
+},
+badges: { },
+isOpen: true,
+type: "F",
+badgesV2: {
+entityBadges: {
+textExtendedBadges: { },
+textBased: { },
+imageBased: { }
+}
+},
+aggregatedDiscountInfoV3: {
+header: "20% OFF",
+subHeader: "UPTO ₹120",
+logoCtx: {
+text: "BENEFITS"
+}
+},
+orderabilityCommunication: {
+title: { },
+subTitle: { },
+message: { },
+customIcon: { },
+commsStyling: { }
+},
+differentiatedUi: {
+displayType: "ADS_UI_DISPLAY_TYPE_ENUM_DEFAULT",
+differentiatedUiMediaDetails: {
+mediaType: "ADS_MEDIA_ENUM_IMAGE",
+lottie: { },
+video: { }
+}
+},
+reviewsSummary: { },
+displayType: "RESTAURANT_DISPLAY_TYPE_DEFAULT",
+restaurantOfferPresentationInfo: { },
+externalRatings: {
+aggregatedRating: {
+rating: "--"
+}
+},
+ratingsDisplayPreference: "RATINGS_DISPLAY_PREFERENCE_SHOW_SWIGGY"
+},
+analytics: { },
+cta: {
+link: "swiggy://menu?restaurant_id=29786&source=collection&query=Chinese",
+text: "RESTAURANT_MENU",
+type: "DEEPLINK"
+},
+widgetId: "collectionV5RestaurantListWidget_SimRestoRelevance_food"
+},
+relevance: {
+type: "RELEVANCE_TYPE_ON_MENU_RETURN",
+sectionId: "MENU_RETURN_FOOD"
+}
+}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.presentation.food.v2.Restaurant",
+info: {},
+analytics: { },
+cta: {
+link: "swiggy://menu?restaurant_id=661725&source=collection&query=Chinese",
+text: "RESTAURANT_MENU",
+type: "DEEPLINK"
+},
+widgetId: "collectionV5RestaurantListWidget_SimRestoRelevance_food"
+},
+relevance: {}
+}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.presentation.food.v2.Restaurant",
+info: {},
+analytics: { },
+cta: {
+link: "swiggy://menu?restaurant_id=32598&source=collection&query=Chinese",
+text: "RESTAURANT_MENU",
+type: "DEEPLINK"
+},
+widgetId: "collectionV5RestaurantListWidget_SimRestoRelevance_food"
+},
+relevance: {
+type: "RELEVANCE_TYPE_ON_MENU_RETURN",
+sectionId: "MENU_RETURN_FOOD"
+}
+}
+},
+{
+card: {
+card: {
+@type: "type.googleapis.com/swiggy.presentation.food.v2.Restaurant",
+info: {},
+analytics: { },
+cta: {
+link: "swiggy://menu?restaurant_id=648847&source=collection&query=Chinese",
+text: "RESTAURANT_MENU",
+type: "DEEPLINK"
+},
+widgetId: "collectionV5RestaurantListWidget_SimRestoRelevance_food"
+},
+relevance: {}
+}
+}
+],
+firstOffsetRequest: true,
+nextFetch: 3
+},
+tid: "a453bafa-a5b7-4b95-a94a-725c136e39b1",
+sid: "n6j4cfe0-ee3a-48a7-97fb-bec3f666d107",
+deviceId: "0cd2e532-4c8a-b4d2-58a3-cb21a4604c6e",
+csrfToken: "tIm4V2FY3NxR-rW4zkv7VO7zeP6btcUoL-zri-6k"
+}
+
