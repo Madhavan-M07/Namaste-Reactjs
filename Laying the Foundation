@@ -1,0 +1,172 @@
+If you are going to join a company .. and you want to run the code ...go to package.json and see the scripts and run in the terminal . There you can find the development build and production build .
+  "scripts": {
+    "start": "parcel index1.html",
+    "build": "parcel build index1.html",
+    "test": "jest"
+  },
+
+npm run start -> development server . == npx parcel index1.html
+npm run build for production server .
+
+so why jsx comes :
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+//React Element  => is an object
+// When we render this element on to the DOM then it become a HTML .
+
+const heading = React.createElement(
+    "h1" ,
+     {id:"heading"} ,
+      "Madhavan is Coming"
+    );
+
+    console.log(heading) // it is an object
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(heading);  //convert object in to HTML ELEMENT
+
+
+FOR creating the just an HTML element in a react .. it is very diffcult to write in create element and becomes clumsy . so there comes JSX file .. so make an create App easy .
+
+jsx -- is not html inside the Javascript .
+
+jsx - jsx is html like syntax .
+
+1.code is for humans and not for machine .. if machine you write code .. you can write in binary ( 0s and 1s ) .
+
+  const jsxHeading =( <h1 className="head" id="jsx-id" tabIndex="1">
+    Namaste React using JSX
+    </h1>);
+
+1.check how to write a attributes like img and all other in JSX .. and if you want to write an JSX for many lines use Bracket .
+
+//React Element using JSX
+const jsxHeading = (<h1 className="head" id="jsx-id" tabIndex="1">
+    Namaste React using JSX
+</h1>);
+
+
+// Functional Component => it is a normal js function which returns JSX (or React Element).
+
+const HeadingComponent = () => {
+    return <h1>Namaste React Functional Component</h1>;
+};
+
+(or)
+
+const HeadingComponent2 = () => <h1 className="heading">Namaste React Functional Component 2</h1>;
+
+React Component -> should start with captail letter . and an arrow function .
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+//React Element  => is an object
+// When we render this element on to the DOM then it become a HTML .
+
+const heading = React.createElement(
+    "h1",
+    { id: "heading" },
+    "Madhavan is Coming"
+);
+
+console.log(heading) // it is an object
+
+//JSX => (transpiled -> done by parcel -> Babel ->
+//  before it reaches the JS Engine)
+
+// JSX => React.createElement => JS Object => HTML (DOM)
+
+//React Element using JSX
+const jsxHeading = (<h1 className="head" id="jsx-id" tabIndex="1">
+    Namaste React using JSX
+</h1>);
+console.log(jsxHeading);  //if you have to give attribute to jsx ..you need to give in camel case .
+
+// React Component 
+// class based compoenents. - old
+// Functional based components. - new and popular
+
+// React Functional component is nothing but it is a js function which returns JSX (or React Element).
+// Functional Component => it is a normal js function which returns JSX (or React Element).
+
+const HeadingComponent = () => {
+    return(
+
+        <div className="heading">
+        
+        <h1>Namaste React Functional Component</h1>
+
+         </div>
+    );
+};
+
+
+
+
+const HeadingComponent2 = () => <h1 className="heading">Namaste React Functional Component 2</h1>;
+
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<HeadingComponent />);  //convert object in to HTML ELEMENT
+// root.render(jsxHeading);
+
+    
+How to wrap functional component inside another functional component :
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+
+
+//react jsx element .
+
+const title = (
+    <h1 className="head-new" tabIndex="5">
+        Jsx element
+    </h1>
+)
+
+
+// Another functional compoenent
+
+const Title = () => (
+    <h1 className="head" id="jsx-id" tabIndex="1">
+        Namaste React using JSX
+    </h1>
+);
+
+const number = 1000;
+
+
+
+// component composition .
+const HeadingComponent = () => {
+    return (
+
+
+        <div className="container">
+            { number}
+            <Title />
+
+            <h1>Namaste React Functional Component</h1>
+
+        </div>
+    );
+};
+
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<HeadingComponent />);  //convert object in to HTML ELEMENT
+// root.render(jsxHeading);
+
+
+You can insert any javascript inside JSX ..it comes down as html.
+
+
+
