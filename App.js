@@ -10,13 +10,15 @@
  * 
  * </
  */
+import React from "react";
+import ReactDOM from "react-dom/client";
 
 const Parent = React.createElement(
     "div" ,
      {id:"parent"},
-    React.createElement("div" , {id:"child"} ,
-   [React.createElement("h1" , {} , "Im an H1 Tag"),
-    React.createElement("h2" , {} , "Im an h2 tag")]   //Array of children in nested structure.
+    React.createElement("div" , {id:"child"} , "This course is from Namaste Reactjs" ,
+   [React.createElement("h1" , {id:"call" , key: "h1"} , "Im an H1 Tag"),
+    React.createElement("h2" , {id:"man" , key: "h2"} , "Im an h2 tag")]   //Array of children in nested structure.
 )
 );
 
