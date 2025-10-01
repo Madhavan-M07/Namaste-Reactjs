@@ -70,8 +70,8 @@ const Body = () => {
             </div>
 
             <div className="res-container">
-                <ResCard resName="Meghana Foods" cuisine="Biriyani , North Indian , Asian" starts="4.5" duration="38" />
-                <ResCard resName="Kfc" cuisine="Burger, Fast Food" starts="4.0" duration="30" />
+                <ResCard resData={resObj} />
+                <ResCard resData={resObj} />
             </div>
 
 
@@ -84,18 +84,21 @@ const Body = () => {
 
 // restaurant card component
 const ResCard = (props) => {
+
+    const {resData} = props;
+    console.log(resData);
  
-     const {resName, cuisine, starts, duration} = props; //destructuring the props object
-     console.log(props); //passing the data to the component using props
+    //  const {resName, cuisine, starts, duration} = props; //destructuring the props object
+    //  console.log(props); //passing the data to the component using props
     return (
 
         <div className="res-card" style={styleCard}>
             <img src="https://www.gkcelesta.com/wp-content/uploads/2024/11/MAN05926-scaled.webp" alt="res-logo" style={{ width: "300px", borderRadius: "5px" }} />
 
-            <h3>{resName}</h3>
-            <h4>{cuisine}</h4>
-            <h4>{starts} Stars</h4>
-            <h4>{duration} minutes</h4>
+            <h3>{resData.name}</h3>
+            <h4>{resData.cuisines.join(", ")}</h4>
+            <h4>{resData.avgRating}</h4>
+            <h4>{resData.sla.deliveryTime}</h4>
 
         </div>
 
