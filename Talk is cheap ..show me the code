@@ -1,0 +1,5 @@
+https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0134236&lng=77.6555729&collection=83636&tags=layout_CCS_Chinese&sortBy=&filters=&type=rcv2&offset=0&page_type=null
+
+Real-time-data : How swiggy gets the data from the backend .
+
+Its uses config driven UI
