@@ -203,5 +203,169 @@ React is fast in DOM Manipulation . Virtual DOM , RECONILIATION.
 
 The Data and UI layer tied with each layer in sync .
 
+when i click the btn ..why my UI is not changing ..but in console it shows ...2 filters data ...in javascript how to update the Ui and react how it happens :
+Good question 👍 You’ve hit the most important difference between normal JavaScript and React. Let’s break it down:
+🟢 What’s happening in your code
+
+listOfRestaurant is just a local variable inside your Body function.
+
+When you click the button, you’re doing:
+
+listOfRestaurant = listOfRestaurant.filter((res) => res.avgRating > 4);
+console.log(listOfRestaurant);
 
 
+✅ This updates the variable in JavaScript memory.
+❌ But React doesn’t “know” about this change, so it won’t re-render the component.
+
+That’s why the console shows filtered data, but the UI doesn’t change.
+🟢 Why React behaves differently
+
+In React:
+
+The UI is declarative. React looks at state/props, and renders the UI based on that.
+
+If you change plain variables, React doesn’t track them → no re-render.
+
+If you change state variables (via useState), React knows something changed → triggers a re-render.
+
+So, to make your UI update, you must use useState.
+
+import { useState } from "react";
+import ResCard from "./Restaurant";
+
+const Body = () => {
+  // Store restaurants in state
+  const [listOfRestaurant, setListOfRestaurant] = useState([
+    {
+      name: "McDonald's",
+      cuisines: ["Burgers", "American"],
+      avgRating: 3.2,
+      cloudinaryImage:
+        "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/RX_THUMBNAIL/IMAGES/VENDOR/2025/4/1/5ad8c46b-d761-46de-b9c0-3578bfbf4c02_708843.jpg",
+    },
+    {
+      name: "KFC",
+      cuisines: ["Burgers", "American"],
+      avgRating: 4.5,
+      cloudinaryImage:
+        "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/RX_THUMBNAIL/IMAGES/VENDOR/2025/4/1/5ad8c46b-d761-46de-b9c0-3578bfbf4c02_708843.jpg",
+    },
+    {
+      name: "Burger King",
+      cuisines: ["Burgers", "American"],
+      avgRating: 4.1,
+      cloudinaryImage:
+        "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/RX_THUMBNAIL/IMAGES/VENDOR/2025/4/1/5ad8c46b-d761-46de-b9c0-3578bfbf4c02_708843.jpg",
+    },
+  ]);
+
+  return (
+    <div className="body">
+      <div className="filter" style={{ padding: "10px", margin: "10px" }}>
+        <button
+          className="filter-btn"
+          onClick={() => {
+            // Update state instead of reassigning variable
+            const filteredList = listOfRestaurant.filter(
+              (res) => res.avgRating > 4
+            );
+            setListOfRestaurant(filteredList);
+          }}
+        >
+          Top Rated Restaurant
+        </button>
+      </div>
+
+      <div className="res-container">
+        {listOfRestaurant.map((res) => (
+          <ResCard key={res.name} resData={res} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Body;
+🟢 Key Concept:
+
+In JavaScript (plain) → changing a variable updates data in memory.
+
+In React → UI re-renders only when state or props change.
+
+So:
+
+listOfRestaurant = ... → won’t re-render ❌
+
+setListOfRestaurant(...) → triggers React re-render ✅
+
+ok understand ..im asking about javascript ..how ui gets re-rendered ...alternative of useState in js ..
+
+Got it 👌 You want to understand this at the JavaScript (without React) level first, and then see how React builds on top of that. Let’s go step by step.
+
+🟢 In plain JavaScript
+
+There is no automatic re-render.
+If you change a variable in JS, the browser doesn’t magically update the UI. You have to manually tell the DOM what changed.
+
+<div id="list"></div>
+<button id="btn">Filter Top Rated</button>
+
+<script>
+  let restaurants = [
+    { name: "McDonald's", rating: 3.2 },
+    { name: "KFC", rating: 4.5 },
+    { name: "Burger King", rating: 4.1 }
+  ];
+
+  function renderUI() {
+    const listDiv = document.getElementById("list");
+    listDiv.innerHTML = ""; // clear old content
+
+    restaurants.forEach(res => {
+      const item = document.createElement("p");
+      item.textContent = `${res.name} - ${res.rating}`;
+      listDiv.appendChild(item);
+    });
+  }
+
+  // initial render
+  renderUI();
+
+  document.getElementById("btn").addEventListener("click", () => {
+    restaurants = restaurants.filter(res => res.rating > 4);
+    renderUI(); // 🔑 manually re-render UI
+  });
+</script>
+Key point in JS:
+
+You change the data (restaurants = restaurants.filter(...)).
+
+You manually re-run a renderUI() function to update the DOM.
+
+Without this, the page won’t change, even if the variable changes
+🟢 In React
+
+React automates that manual work:
+
+useState holds your data.
+
+When you call setState (e.g., setRestaurants(filtered)), React:
+
+Updates the variable (like JS does).
+
+Calls its internal renderUI() (reconciliation + virtual DOM diffing).
+
+Updates only the changed parts of the real DOM.
+
+So React = JavaScript + a smart renderUI system that runs automatically when state/props change.
+Here, you don’t manually call renderUI() — the proxy automatically triggers when data changes.
+This is similar to what frameworks like Vue/React do under the hood.
+
+✅ Summary:
+
+In plain JS, you must manually re-render the DOM after updating data.
+
+In React, useState + Virtual DOM does that automatically.
+
+Alternative in JS → write a custom renderUI() or use Proxy/observer pattern to simulate useState.
