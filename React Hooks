@@ -131,3 +131,77 @@ my-app/
 │  └─ index.jsx            # entry point for Parcel
 ├─ package.json
 └─ .parcelrc               # optional custom config
+
+
+
+Two types of export in React :
+
+1. One way is Module defualt export .
+
+if a file want to export multiple data in a single files ..Then you can use named export ..Keep the name infront of the export . 
+
+Always it is a Good Practice Keep the the compontent file not more than 100 lines of code .. if it is exceed ..you aren doing something wrong .Make it simple. Even Akshay at Uber uses the code as same 
+
+1. when i use filter logic...and console.log it ..the data is filtered and UI didnt modified it .
+
+Hooks : 
+
+import ResCard from "./Restaurant"
+import resList from "../utils/mockdata"
+const Body = () => {
+
+    let listOfRestaurant = [{
+        name:"McDonald's",
+        cuisines:["Burgers","American"],
+        avgRating:3.2,
+       "cloudinaryImage": "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/RX_THUMBNAIL/IMAGES/VENDOR/2025/4/1/5ad8c46b-d761-46de-b9c0-3578bfbf4c02_708843.jpg"
+    },
+     {
+        name:"KFC",
+        cuisines:["Burgers","American"],
+        avgRating:4.5,
+       "cloudinaryImage": "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/RX_THUMBNAIL/IMAGES/VENDOR/2025/4/1/5ad8c46b-d761-46de-b9c0-3578bfbf4c02_708843.jpg"
+    },
+        {
+        name:"Burger King",
+        cuisines:["Burgers","American"],
+        avgRating:4.1,
+       "cloudinaryImage": "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/RX_THUMBNAIL/IMAGES/VENDOR/2025/4/1/5ad8c46b-d761-46de-b9c0-3578bfbf4c02_708843.jpg"
+    }
+];
+
+  return (
+    <div className="body">
+      <div className="filter" style={{ padding: "10px", margin: "10px" }}>
+
+        <button className="filter-btn"
+         onClick={()=>
+         {
+            //Filter Logic
+            listOfRestaurant=listOfRestaurant.filter((res)=>res.avgRating>4);
+            console.log(listOfRestaurant);
+         }}>
+         Top Rated Restaurant</button>
+      </div>
+
+      <div className="res-container">
+        {listOfRestaurant.map((res) => (
+          <ResCard key={res.name} resData={res} />
+        ))}
+      </div>
+    </div>
+
+  )
+
+}
+
+export default Body
+
+when i clicked the btn ..of highest rating restaurant ..the ui stills the same but in console it filters and gives only 2 restaurants is there .. but why the UI is not changed ?
+
+React is fast in DOM Manipulation . Virtual DOM , RECONILIATION.
+
+The Data and UI layer tied with each layer in sync .
+
+
+
