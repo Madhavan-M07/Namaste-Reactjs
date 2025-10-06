@@ -370,6 +370,34 @@ In React, useState + Virtual DOM does that automatically.
 
 Alternative in JS → write a custom renderUI() or use Proxy/observer pattern to simulate useState.
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Whenever the state variable changes ..react re-renders the Component .=> whenever my state variable updates ..react re-renders the component .
+React Hook - normal js function for ulitiy gives you powerful state variable .
 
+React is Good at - DOM Operation .tal
+changed my state variable => it keep the data variable ..sync with ui variable .
+
+Now , there comes => a virtual DOM .
+
+REACT USES => ( Reconciliation Algorithm is also known as React Fibre ) . On the UI .
+1. we have DOM ITS A TREE .
+
+res - container => 15 rest - card 
+
+There are 7 resto card => suppose UI CHANGES FROM FILTERTING IN TO 3 FILTERED CARDS .
+
+virtual DOM is a representation of Actual DOM . VIRTUAL DOM => IS AN OBJECT .
+
+DIFF ALGORITHM : IT FINDSOUT THE UPDATED ALGORITHM AND A OLD DOM .
+DIFF BETWEEN OLD VIRTUAL DOM AND CLICK THE NEW UPDATED VDOM => TRY OUT THE DIFFERNECE BETWEN O.VDOM AND N.VIRTUALDOM . ON EVERY RENDER CYCLE .
+
+use state is array destructing .
+
+const arr = useState(resList);
+const[listOfRestaurants , setListOfRestraunt] = arr;  // this also  works;
+const listofRestaurants = arr[0];
+const setListofRestuarants = arr[1];
+
+This is a useState management . please ask how what where . 
 
 
