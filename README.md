@@ -179,3 +179,9 @@ MIT — feel free to use and adapt this starter for your projects.
 ---
 
 *Happy coding — Namaste!*
+
+## React Hooks
+
+  (Normal JS Utility functions)
+   -useState()
+   -useEffect()
