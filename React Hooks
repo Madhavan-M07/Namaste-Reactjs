@@ -369,3 +369,5 @@ In plain JS, you must manually re-render the DOM after updating data.
 In React, useState + Virtual DOM does that automatically.
 
 Alternative in JS → write a custom renderUI() or use Proxy/observer pattern to simulate useState.
+
+
