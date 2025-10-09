@@ -1,1 +1,4 @@
+Architecture :
+Monolith : Everything in Same Project .
 
+Micro Services -- In Micro Services : We have different services for Different Project .
