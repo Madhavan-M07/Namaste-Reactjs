@@ -11,5 +11,6 @@ Approach 1 : loads -> api -> render the UI  : suppose the API takes 500ms ..and 
 Approach 2 : loads -> render -> api calls ..and then re-render the application from the data from the API . This approach is better .
 1. react is better for render mechanism => it gives better . 
 
+1. useEffect => is a function which does something for us.
 
   
