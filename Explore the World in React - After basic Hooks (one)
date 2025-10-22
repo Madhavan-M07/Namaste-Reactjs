@@ -2,3 +2,14 @@ Architecture :
 Monolith : Everything in Same Project .
 
 Micro Services -- In Micro Services : We have different services for Different Project .
+
+It runs on different PORTS . AT end ..the ports are mapped in to API's
+
+How UI Application Fetchs the Data from API (Backend)
+
+Approach 1 : loads -> api -> render the UI  : suppose the API takes 500ms ..and our page load for 500s ..dont see anything and then api respond ..it takes lot of time .
+Approach 2 : loads -> render -> api calls ..and then re-render the application from the data from the API . This approach is better .
+1. react is better for render mechanism => it gives better . 
+
+
+  
