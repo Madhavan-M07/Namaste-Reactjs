@@ -13,4 +13,4 @@ Approach 2 : loads -> render -> api calls ..and then re-render the application f
 
 1. useEffect => is a function which does something for us.
 
-  
+  Shimmer UI -- we load a fake page => skelton till the data is loaded and real data is fetched . This is the much better user Experience .
